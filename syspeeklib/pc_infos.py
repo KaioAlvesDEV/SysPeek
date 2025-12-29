@@ -88,7 +88,7 @@ def get_disk_info() -> dict:
     return disk_info
 
 
-def get_gpu_info():
+def get_gpu_info() -> dict:
     
     """Retrieve basic GPU information.
 

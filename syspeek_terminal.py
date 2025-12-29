@@ -1,5 +1,4 @@
-from syspeeklib import pc_infos
-
+from syspeeklib import pc_infos, gets
 
 def main():
     
@@ -16,10 +15,7 @@ def main():
     
     syspeek_ui.loading(1.2, 25)
     
-    try:
-        print(syspeek_ui.initial_table(computer_infos))
-    except KeyError:
-        print('[bold red]KeyError[/bold red]')
+    print(syspeek_ui.initial_table(computer_infos))
         
     input("\nPress Enter to exit...")
 

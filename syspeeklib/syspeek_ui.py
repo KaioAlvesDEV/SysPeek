@@ -1,6 +1,6 @@
 from rich.table import Table
 
-def initial_table(computer_infos):
+def initial_table(computer_infos) -> str:
     
     # Format the information for display
     os_str = str(f'{computer_infos['OS']['System']} {computer_infos['OS']['Release']}')
@@ -20,6 +20,7 @@ def initial_table(computer_infos):
         table.add_row(label, values)
 
     return table
+
 
 def loading(segs_total=1, loading_atualizations=100, description='Loading...'):
     
