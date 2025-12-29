@@ -32,3 +32,28 @@ def get_simple_cpu_info() -> dict:
         'Brand': cpuinfo.get_cpu_info().get('brand_raw', 'Unknown'),}
     
     return simple_cpu_info
+
+def get_simple_memory_info() -> dict:
+    
+    """Retrieve basic memory information.
+
+    Returns:
+        dict: A dictionary containing total and available memory in bytes.
+            Keys:
+                - 'Total': Total physical memory in bytes.
+                - 'Available': Available physical memory in bytes.
+    """
+    
+    import psutil
+    from math import ceil
+    
+    mem = psutil.virtual_memory()
+    mem_gb = mem.total / (1024 ** 3)  # Convert bytes to GB
+    
+    simple_memory_info = {
+        'Total': mem_gb,
+        'Rounded Total': ceil(mem_gb),  # Rounded up total memory in GB
+    }
+    
+    return simple_memory_info
+    
