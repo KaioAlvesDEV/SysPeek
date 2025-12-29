@@ -10,7 +10,7 @@ def initial_table(computer_infos):
 
     table = Table(title="SysPeek - System Information", style="bold blue on blue")
     
-    table.add_column("Component", style="cyan on blue")#, no_wrap=True)
+    table.add_column("Component", style="cyan on blue", no_wrap=True)
     table.add_column("Details", style="yellow on white")
     
     table.add_row("Operating System", os_str)
@@ -20,3 +20,17 @@ def initial_table(computer_infos):
     table.add_row("GPU", gpu_str)
 
     return table
+
+def loading(segs_total=1, loading_atualizations=100, description='Loading...'):
+    
+    from rich.progress import track
+    from rich.console import Console
+    from time import sleep
+    
+    console = Console()
+    
+    segs_per_atualization = segs_total / loading_atualizations
+    
+    for i in track(range(loading_atualizations), description=description):
+        sleep(segs_per_atualization)
+    console.clear()

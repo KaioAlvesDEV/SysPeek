@@ -10,6 +10,9 @@ def main():
                       'DISK': simple_pc_infos.get_simple_disk_info(),
                       'GPU': simple_pc_infos.get_simple_gpu_info()}
     
+    
+    syspeek_ui.loading(1.2, 25)
+    
     print(syspeek_ui.initial_table(computer_infos))
     input("\nPress Enter to exit...")
 
