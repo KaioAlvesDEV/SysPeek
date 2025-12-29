@@ -57,3 +57,28 @@ def get_simple_memory_info() -> dict:
     
     return simple_memory_info
     
+def get_simple_disk_info() -> dict:
+    
+    """Retrieve basic disk information.
+
+    Returns:
+        dict: A dictionary containing total and used disk space in bytes.
+            Keys:
+                - 'Total': Total disk space in bytes.
+                - 'Used': Used disk space in bytes.
+    """
+    
+    import psutil
+    from math import ceil
+    
+    disk = psutil.disk_usage('/')
+    
+    disk_gb = disk.total / (1024 ** 3)  # Convert bytes to GB
+    
+    simple_disk_info = {
+        'Total': disk_gb,
+        'Rounded Total': ceil(disk_gb),  # Rounded up total disk space in GB
+        'Used': disk.used,
+    }
+    
+    return simple_disk_info

@@ -10,7 +10,8 @@ def main():
     # Retrieve simple operating system information
     computer_infos = {'OS': simple_pc_infos.get_simple_os_info(), 
                       'CPU': simple_pc_infos.get_simple_cpu_info(),
-                      'RAM': simple_pc_infos.get_simple_memory_info()}
+                      'RAM': simple_pc_infos.get_simple_memory_info(),
+                      'DISK': simple_pc_infos.get_simple_disk_info()}
 
     # Display name and release of the operating system
     os_infos = computer_infos['OS']
@@ -22,9 +23,13 @@ def main():
     # Display RAM information
     ram_infos = computer_infos['RAM']
     
+    # Display Disk information
+    disk_infos = computer_infos['DISK']
+    
     console.print(f'Operating System:', style=f'bold white on blue', end=''); console.print('', os_name, style='yellow')
     console.print(f'Processor:', style=f'bold white on blue', end=''); console.print('', cpu_brand, style='yellow')
     console.print(f'RAM:', style=f'bold white on blue', end=''); console.print('', f"{ram_infos['Rounded Total']:.2f} GB", style='yellow')
+    console.print(f'Disk:', style=f'bold white on blue', end=''); console.print('', f"{disk_infos['Rounded Total']:.2f} GB", style='yellow')
     input("\nPress Enter to exit...")
 
 if __name__ == "__main__":
