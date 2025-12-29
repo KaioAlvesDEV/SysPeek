@@ -1,5 +1,6 @@
+from rich.table import Table
+
 def initial_table(computer_infos):
-    from rich.table import Table
     
     # Format the information for display
     os_str = str(f'{computer_infos['OS']['System']} {computer_infos['OS']['Release']}')
@@ -13,11 +14,10 @@ def initial_table(computer_infos):
     table.add_column("Component", style="cyan on blue", no_wrap=True)
     table.add_column("Details", style="yellow on white")
     
-    table.add_row("Operating System", os_str)
-    table.add_row("CPU", cpu_str)
-    table.add_row("RAM", ram_str)
-    table.add_row("Disk", disk_str)
-    table.add_row("GPU", gpu_str)
+    rows = [('Operating System', os_str), ('CPU', cpu_str), ('RAM', ram_str), ('Disk', disk_str), ('GPU', gpu_str)]
+        
+    for label, values in rows:
+        table.add_row(label, values)
 
     return table
 
