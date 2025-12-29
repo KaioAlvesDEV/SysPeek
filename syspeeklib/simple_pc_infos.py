@@ -85,6 +85,11 @@ def get_simple_disk_info() -> dict:
 
 def get_simple_gpu_info():
     
+    """Retrieve basic GPU information.
+
+    Returns:
+        dict: A dictionary containing the GPU name.
+    """
     import platform
     info = {"Name": "Unknown"}
     system = platform.system()
