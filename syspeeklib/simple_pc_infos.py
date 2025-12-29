@@ -82,3 +82,85 @@ def get_simple_disk_info() -> dict:
     }
     
     return simple_disk_info
+
+def get_simple_gpu_info():
+    
+    import platform
+    info = {"Name": "Unknown"}
+    system = platform.system()
+
+    # NVIDIA GPU detection using GPUtil
+    try:
+        import GPUtil
+        gpus = GPUtil.getGPUs()
+        if gpus:
+            info["Name"] = gpus[0].name
+            return info
+    except:
+        pass
+    
+    if system == "Windows":
+        # Try WMI method first
+        try:
+            import wmi
+            c = wmi.WMI()
+            gpu_info = c.Win32_VideoController()[0]
+            info["Name"] = gpu_info.Name
+            return info
+        except:
+            pass
+        # Windows Management Instrumentation Command-line (WMIC) method
+        try:
+            import subprocess
+
+            result = subprocess.run(
+                ["wmic", "path", "win32_videocontroller", "get", "name"],
+                capture_output=True,
+                text=True
+            )
+
+            lines = [l.strip() for l in result.stdout.split("\n") if l.strip()]
+            if len(lines) > 1:
+                info["Name"] = lines[1]
+                return info
+        except:
+            pass
+
+        # PowerShell method
+        try:
+            import subprocess
+
+            result = subprocess.run(
+                [
+                    "powershell",
+                    "-Command",
+                    "Get-CimInstance Win32_VideoController | Select-Object -ExpandProperty Name"
+                ],
+                capture_output=True,
+                text=True
+            )
+
+            name = result.stdout.strip()
+            if name:
+                info["Name"] = name
+        except:
+            pass
+        
+    elif system == "Linux":
+        
+        # Try lspci command
+        try:
+            import subprocess
+            result = subprocess.run(
+                ["lspci"],
+                capture_output=True,
+                text=True
+            )
+            for line in result.stdout.split("\n"):
+                if "VGA" in line or "3D controller" in line:
+                    info["Name"] = line.split(":")[-1].strip()
+                    return info
+        except:
+            pass
+
+    return info
