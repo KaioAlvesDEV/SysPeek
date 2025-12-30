@@ -1,4 +1,4 @@
-from syspeeklib import pc_infos, gets
+from syspeeklib import pc_infos
 
 def main():
     
