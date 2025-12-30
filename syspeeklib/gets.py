@@ -102,7 +102,7 @@ def gets_gpu_name() -> str:
             # Try WMI method first
             try:
                 gpu_name = gets_gpu_name_by_wmi()
-                return gpu_name if gpu_name != 'Unknown' else ()
+                return gpu_name
             except:
                 pass
             
