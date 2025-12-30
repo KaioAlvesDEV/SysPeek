@@ -14,7 +14,10 @@ def get_os_info() -> dict:
     # Get system and release information
     os_info = {
         'System': platform.system(),
-        'Release': platform.release()
+        'Release': platform.release(),
+        'Version': platform.version(),
+        'Node': platform.node(),
+        'Machine': platform.machine()
     }
     return os_info
 

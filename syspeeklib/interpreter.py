@@ -5,11 +5,14 @@ def cut_string_in_two(string):
         return -1
     return string
 
+
 def commands_list() -> dict:
     return {
-        'goto': ('os', 'cpu', 'ram', 'disk', 'gpu'),
-        'exit': ()
+        'goto': ('home', 'os', 'cpu', 'ram', 'disk', 'gpu'),
+        'exit': (),
+        'help': ()
     }
+
 
 def user_command_in_commands_list(user_command) -> bool:
     

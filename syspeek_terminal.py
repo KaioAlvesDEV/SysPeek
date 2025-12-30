@@ -4,6 +4,8 @@ def main():
     
     from syspeeklib import syspeek_ui
     from rich import print
+    from rich.console import Console
+    console = Console()
     
     # Retrieve simple operating system information
     computer_infos = {
@@ -17,9 +19,8 @@ def main():
     
     syspeek_ui.loading(1.2, 25)
     
-    print(syspeek_ui.initial_table(computer_infos))
-        
-    input("\nPress Enter to exit...")
+    console.print(syspeek_ui.initial_table(computer_infos), justify='center')
+    syspeek_ui.command_line(computer_infos)
 
 if __name__ == "__main__":
     main()

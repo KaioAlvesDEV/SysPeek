@@ -1,4 +1,17 @@
 from rich.table import Table
+from rich import print
+from rich.console import Console
+console = Console()
+
+def clear():
+    
+    import os
+    
+    if os.name == 'nt':
+        os.system('cls')
+    else:
+        os.system('clear')
+
 
 def initial_table(computer_infos) -> str:
     
@@ -22,6 +35,28 @@ def initial_table(computer_infos) -> str:
     return table
 
 
+def os_table(computer_infos) -> str:
+    
+    # Format the information for display
+    os_system = str(f'{computer_infos['OS']['System']}')
+    os_release = str(f'{computer_infos['OS']['Release']}')
+    os_version = str(f'{computer_infos['OS']['Version']}')
+    os_node = str(f'{computer_infos['OS']['Node']}')
+    os_machine = str(f'{computer_infos['OS']['Machine']}')
+
+    table = Table(title="SysPeek - Operating System", style="bold blue on blue")
+    
+    table.add_column("Component", style="cyan on blue", no_wrap=True)
+    table.add_column("Details", style="yellow on white")
+    
+    rows = [('System', os_system), ('Release', os_release), ('Version', os_version), ('Node', os_node), ('Machine', os_machine)]
+        
+    for label, values in rows:
+        table.add_row(label, values)
+
+    return table
+
+
 def loading(segs_total=1, loading_atualizations=100, description='Loading...'):
     
     from rich.progress import track
@@ -35,3 +70,32 @@ def loading(segs_total=1, loading_atualizations=100, description='Loading...'):
     for i in track(range(loading_atualizations), description=description):
         sleep(segs_per_atualization)
     console.clear()
+
+
+def command_line(computer_infos):
+    
+    from syspeeklib import interpreter
+    from os import system
+    
+    global console
+    screen = initial_table(computer_infos)
+    
+    while True:    
+        console.print('\n>>>', style='bold white on blue', end='')
+        command = input(' ').strip()
+        available_command = interpreter.user_command_in_commands_list(command)
+    
+        if available_command:
+            clear()
+            if command == 'exit':
+                quit()
+            elif command == 'goto home':
+                screen = initial_table(computer_infos)
+                console.print(screen, justify='center')
+            elif command == 'goto os':
+                screen = os_table(computer_infos)
+                console.print(screen, justify='center')
+        else:
+            clear()
+            console.print(screen, justify='center')
+            console.print('\n[bold red]Invalid command (type help for help)[/]')
