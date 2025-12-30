@@ -57,6 +57,69 @@ def os_table(computer_infos) -> str:
     return table
 
 
+def cpu_table(computer_infos) -> str:
+    
+    # Format the information for display
+    cpu_brand = str(computer_infos['CPU']['Brand'])
+    cpu_vendor = str(computer_infos['CPU']['Vendor'])
+    cpu_arch = str(computer_infos['CPU']['Architecture'])
+    cpu_bits = str(computer_infos['CPU']['Bits'])
+    cpu_cores = str(computer_infos['CPU']['Physical Cores'])
+    cpu_threads = str(computer_infos['CPU']['Logical Cores'])
+    cpu_freq_adv = str(computer_infos['CPU']['Advertised Frequency'])
+    cpu_l1_data = str(computer_infos['CPU']['L1 Data Cache'])
+    cpu_l1_instruction = str(computer_infos['CPU']['L1 Instruction Cache'])
+    cpu_l2 = str(computer_infos['CPU']['L2 Cache'])
+    cpu_l3 = str(computer_infos['CPU']['L3 Cache'])
+    cpu_flags = str(computer_infos['CPU']['Flags'])
+
+    table = Table(title="SysPeek - CPU", style="bold blue on blue")
+
+    table.add_column("Component", style="cyan on blue", no_wrap=True)
+    table.add_column("Details", style="yellow on white")
+
+    rows = [
+        ('Brand', cpu_brand),
+        ('Vendor', cpu_vendor),
+        ('Architecture', cpu_arch),
+        ('Bits', cpu_bits),
+        ('Physical Cores', cpu_cores),
+        ('Logical Cores', cpu_threads),
+        ('Advertised Frequency', cpu_freq_adv),
+        ('L1 Data Cache', cpu_l1_data),
+        ('L1 Instruction Cache', cpu_l1_instruction),
+        ('L2 Cache', cpu_l2),
+        ('L3 Cache', cpu_l3),
+        ('Flags', cpu_flags)
+        ]
+        
+    for label, values in rows:
+        if values != 'Unknown':
+            table.add_row(label, values)
+
+    return table
+
+
+def ram_table(computer_infos) -> str:
+    
+    table = Table(title="SysPeek - RAM", style="bold blue on blue")
+
+    table.add_column("Component", style="cyan on blue", no_wrap=True)
+    table.add_column("Details", style="yellow on white")
+
+    ram_total = f'{computer_infos['RAM']['Total']:.2f} GB'
+    
+    rows = [
+        ('Total', ram_total)
+        ]
+        
+    for label, values in rows:
+        if values != 'Unknown':
+            table.add_row(label, values)
+
+    return table
+
+
 def loading(segs_total=1, loading_atualizations=100, description='Loading...'):
     
     from rich.progress import track
@@ -91,11 +154,13 @@ def command_line(computer_infos):
                 quit()
             elif command == 'goto home':
                 screen = initial_table(computer_infos)
-                console.print(screen, justify='center')
             elif command == 'goto os':
                 screen = os_table(computer_infos)
-                console.print(screen, justify='center')
+            elif command == 'goto cpu':
+                screen = cpu_table(computer_infos)
+            elif command == 'goto ram':
+                screen = ram_table(computer_infos)
         else:
             clear()
-            console.print(screen, justify='center')
-            console.print('\n[bold red]Invalid command (type help for help)[/]')
+            console.print('\n[bold red]Invalid command (type help for help)[/]', justify='right')
+        console.print(screen, justify='center')

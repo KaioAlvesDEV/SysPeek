@@ -23,17 +23,66 @@ def get_os_info() -> dict:
 
 
 def get_cpu_info() -> dict:
-    
-    """Retrieve CPU information.
+    """Retrieve CPU information combining cpuinfo and psutil.
 
     Returns:
-        dict: A dictionary containing the CPU brand.
+        dict: A dictionary containing detailed CPU info.
     """
+
+    import cpuinfo
+    import psutil
+
+    info = cpuinfo.get_cpu_info()
+
+    def parse_cache_size(cache_value):
+        try:
+            return int(cache_value)
+        except (ValueError, TypeError):
+            return None
+
+    l1cache_bytes = parse_cache_size(info.get('l1_cache_size', None))
+    l2cache_bytes = parse_cache_size(info.get('l2_cache_size', None))
+    l3cache_bytes = parse_cache_size(info.get('l3_cache_size', None))
+
+    def bytes_to_mb_str(num_bytes):
+        if num_bytes is None:
+            return "Unknown"
+        return f"{num_bytes / (1024 ** 2):.2f} MB"
+
+    l1cache_size_mb_str = bytes_to_mb_str(l1cache_bytes)
+    l2cache_size_mb_str = bytes_to_mb_str(l2cache_bytes)
+    l3cache_size_mb_str = bytes_to_mb_str(l3cache_bytes)
+
+    # Use psutil to get more reliable core counts
+    physical_cores = psutil.cpu_count(logical=False)
+    logical_cores = psutil.cpu_count(logical=True)
     
-    import cpuinfo 
-    
+    flags_str = ''
+    flags_list = info.get('flags', [])
+    for i, flag in enumerate(flags_list):
+        if i == 0:
+            flags_str += f'{flag}'
+        else:
+            flags_str += f', {flag}'
+
     cpu_info = {
-        'Brand': cpuinfo.get_cpu_info().get('brand_raw', 'Unknown'),}
+        "Brand": info.get("brand_raw", "Unknown"),
+        "Vendor": info.get("vendor_id_raw", "Unknown"),
+        "Architecture": info.get("arch", "Unknown"),
+        "Bits": info.get("bits", "Unknown"),
+
+        "Physical Cores": physical_cores if physical_cores is not None else "Unknown",
+        "Logical Cores": logical_cores if logical_cores is not None else "Unknown",
+
+        "Advertised Frequency": info.get("hz_advertised_friendly", "Unknown"),
+
+        "L1 Data Cache": info.get("l1_data_cache_size", "Unknown"),
+        "L1 Instruction Cache": l1cache_size_mb_str,
+        "L2 Cache": l2cache_size_mb_str,
+        "L3 Cache": l3cache_size_mb_str,
+
+        "Flags": flags_str
+    }
     return cpu_info
 
 
