@@ -16,7 +16,6 @@ def get_os_info() -> dict:
         'System': platform.system(),
         'Release': platform.release()
     }
-    
     return os_info
 
 
@@ -32,7 +31,6 @@ def get_cpu_info() -> dict:
     
     cpu_info = {
         'Brand': cpuinfo.get_cpu_info().get('brand_raw', 'Unknown'),}
-    
     return cpu_info
 
 
@@ -57,7 +55,6 @@ def get_memory_info() -> dict:
         'Total': mem_gb,
         'Rounded Total': ceil(mem_gb),  # Rounded up total memory in GB
     }
-    
     return memory_info
     
     
@@ -84,7 +81,6 @@ def get_disk_info() -> dict:
         'Rounded Total': ceil(disk_gb),  # Rounded up total disk space in GB
         'Used': disk.used,
     }
-    
     return disk_info
 
 
@@ -96,5 +92,4 @@ def get_gpu_info() -> dict:
         dict: A dictionary containing GPU infos.
     """
     gpu_info = {'Name': gets.gets_gpu_name()}
-
     return gpu_info

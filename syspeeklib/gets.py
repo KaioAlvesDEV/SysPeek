@@ -1,6 +1,7 @@
 def gets_platform() -> str:
     
     import platform
+    
     system = platform.system()
     return system
 
@@ -8,9 +9,11 @@ def gets_platform() -> str:
 def gets_gpu_name_by_gputil() -> str:
     
     from GPUtil import getGPUs
+    
     gpu_name = 'Unknown'
     
     gpus = getGPUs()
+    
     if gpus:
         gpu_name = gpus[0].name
     return gpu_name
@@ -19,9 +22,10 @@ def gets_gpu_name_by_gputil() -> str:
 def gets_gpu_name_by_wmi() -> str:
     
     import wmi
-    gpu_name = 'Unknown'
     
+    gpu_name = 'Unknown'
     c = wmi.WMI()
+    
     gpu_name = c.Win32_VideoController()[0]
     gpu_name = gpu_name.Name
     return gpu_name
@@ -47,6 +51,7 @@ def gets_gpu_name_by_wmic() -> str:
 def gets_gpu_name_by_powershell() -> str:
     
     import subprocess
+    
     gpu_name = 'Unknown'
 
     result = subprocess.run(
@@ -68,6 +73,7 @@ def gets_gpu_name_by_powershell() -> str:
 def gets_gpu_name_by_lspci() -> str:
     
     import subprocess
+    
     gpu_name = 'Unknown'
     
     result = subprocess.run(
@@ -75,6 +81,7 @@ def gets_gpu_name_by_lspci() -> str:
     capture_output=True,
     text=True
     )
+    
     for line in result.stdout.split("\n"):
         if "VGA" in line or "3D controller" in line:
             gpu_name = line.split(":")[-1].strip()
@@ -88,11 +95,10 @@ def gets_gpu_name() -> str:
 
     #NVIDIA GPU detection using GPUtil
     try:
-        
         gpu_name = gets_gpu_name_by_gputil()
+        
         if gpu_name != 'Unknown':
             return gpu_name
-    
     except:
        pass
     
@@ -133,6 +139,7 @@ def gets_gpu_name() -> str:
         
 
 def gets_safe_dict(data, *keys):
+    
     for key in keys:
         if not isinstance(data, dict):
             return 'N/A'
