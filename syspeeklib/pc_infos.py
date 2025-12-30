@@ -1,5 +1,5 @@
 import platform
-from syspeeklib import gets
+import gets
 
 def get_os_info() -> dict:
     
